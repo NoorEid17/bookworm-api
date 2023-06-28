@@ -1,6 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../config/postgres";
-import Category from "./Category";
+import Category from "./Category.model";
 
 class Book extends Model {
   declare bookId: number;

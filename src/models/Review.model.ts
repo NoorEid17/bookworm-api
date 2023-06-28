@@ -1,7 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../config/postgres";
-import Book from "./Book";
-import User from "./User";
+import Book from "./Book.model";
+import User from "./User.model";
 
 class Review extends Model {
   declare reviewId: number;
