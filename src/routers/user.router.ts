@@ -10,10 +10,17 @@ router.get("/", async (req, res) => {
 });
 
 router.post(
-  "/",
+  "/signup",
   UserValidation.validateUserSignup,
   checkValidationResult,
   UserController.signup
+);
+
+router.post(
+  "/login",
+  UserValidation.validateUserLogin,
+  checkValidationResult,
+  UserController.login
 );
 
 export default router;

@@ -17,3 +17,8 @@ export const validateUserSignup = [
   body("password").notEmpty().isLength({ min: 5, max: 30 }),
   body("lastName").optional().isLength({ min: 3, max: 15 }),
 ];
+
+export const validateUserLogin = [
+  body("username").isLength({ min: 5, max: 30 }).notEmpty(),
+  body("password").notEmpty().isLength({ min: 5, max: 30 }),
+];
