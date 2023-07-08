@@ -77,3 +77,7 @@ export const login = async (
     next(err);
   }
 };
+
+export const getProtectedResource = (req: Request, res: Response) => {
+  res.json({ msg: "User Passed", user: req.user });
+};

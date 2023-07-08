@@ -2,12 +2,9 @@ import { Router } from "express";
 import * as UserValidation from "../middlewares/user.validation";
 import * as UserController from "../controllers/user.controller";
 import checkValidationResult from "../middlewares/checkValidtion";
+import checkAuth from "../middlewares/checkAuth";
 
 const router = Router();
-
-router.get("/", async (req, res) => {
-  // Get All users
-});
 
 router.post(
   "/signup",
@@ -22,5 +19,7 @@ router.post(
   checkValidationResult,
   UserController.login
 );
+
+router.get("/test", checkAuth, UserController.getProtectedResource);
 
 export default router;
