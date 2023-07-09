@@ -25,6 +25,7 @@ router.patch(
   "/update",
   checkAuth,
   UserValidation.validateUserUpdate,
+  checkValidationResult,
   upload.single("avatar"),
   UserController.update
 );
