@@ -17,6 +17,7 @@ app.use(express.json());
 
 app.use(logger("dev"));
 
+app.use("/uploads", express.static("uploads"));
 app.use("/api", router);
 
 app.listen(process.env.PORT, () => {
