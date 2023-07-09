@@ -3,6 +3,7 @@ import * as UserValidation from "../middlewares/user.validation";
 import * as UserController from "../controllers/user.controller";
 import checkValidationResult from "../middlewares/checkValidtion";
 import checkAuth from "../middlewares/checkAuth";
+import upload from "../config/multer";
 
 const router = Router();
 
@@ -20,6 +21,12 @@ router.post(
   UserController.login
 );
 
-router.get("/test", checkAuth, UserController.getProtectedResource);
+router.patch(
+  "/update",
+  checkAuth,
+  UserValidation.validateUserUpdate,
+  upload.single("avatar"),
+  UserController.update
+);
 
 export default router;

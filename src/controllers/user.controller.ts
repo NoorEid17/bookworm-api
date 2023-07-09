@@ -78,6 +78,26 @@ export const login = async (
   }
 };
 
-export const getProtectedResource = (req: Request, res: Response) => {
-  res.json({ msg: "User Passed", user: req.user });
+export const update = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = await User.findByPk(req.user.userId);
+    user?.set({ ...req.body });
+
+    if (req.file) {
+      user!.avatar = req.file.filename;
+    }
+
+    await user?.save();
+
+    const userPayload = user?.toJSON();
+    delete userPayload.password;
+
+    res.json({ msg: "User updated successfully!", user: userPayload });
+  } catch (err) {
+    next(err);
+  }
 };
