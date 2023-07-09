@@ -1,6 +1,6 @@
 import User from "../models/User.model";
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { hash, compare } from "bcryptjs";
 
 const generateAccessToken = (user: User) => {
@@ -12,12 +12,37 @@ const generateAccessToken = (user: User) => {
   return token;
 };
 
-const generateRefreshToken = async (user: User) => {
+const generateRefreshToken = (user: User) => {
   const payload = { userId: user.userId };
   const token = jwt.sign(payload, process.env.JWT_SECRET!, {
     expiresIn: "7days",
   });
   return token;
+};
+
+export const refreshToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const token = req.cookies["refreshToken"];
+    if (!token) {
+      return res.status(403).json({ msg: "No refresh token provided!" });
+    }
+    const payload: any = jwt.verify(token, process.env.JWT_SECRET!);
+    const userId = payload.userId;
+    const user = await User.findByPk(userId);
+    const accessToken = generateAccessToken(user!);
+
+    res.json({ token: accessToken });
+  } catch (err: any) {
+    if (err instanceof JsonWebTokenError || err instanceof TokenExpiredError) {
+      console.log(err.message);
+      return res.status(400).json({ msg: "Access forbidden!" });
+    }
+    next(err);
+  }
 };
 
 export const signup = async (

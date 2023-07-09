@@ -29,4 +29,6 @@ router.patch(
   UserController.update
 );
 
+router.get("/token", UserController.refreshToken);
+
 export default router;
