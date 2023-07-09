@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import User from "../models/User.model";
 
 const checkAuth = async (req: Request, res: Response, next: NextFunction) => {
@@ -13,6 +13,9 @@ const checkAuth = async (req: Request, res: Response, next: NextFunction) => {
     req.user = payload as User;
     next();
   } catch (err) {
+    if (err instanceof JsonWebTokenError || err instanceof TokenExpiredError) {
+      return res.status(400).json({ msg: "Access forbidden!" });
+    }
     next(err);
   }
 };
