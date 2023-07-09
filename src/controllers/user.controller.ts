@@ -38,7 +38,6 @@ export const refreshToken = async (
     res.json({ token: accessToken });
   } catch (err: any) {
     if (err instanceof JsonWebTokenError || err instanceof TokenExpiredError) {
-      console.log(err.message);
       return res.status(400).json({ msg: "Access forbidden!" });
     }
     next(err);
