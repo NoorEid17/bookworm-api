@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     callback(
       null,
-      file.fieldname + "-" + uniqueSuffix + `.${extname(file.originalname)}`
+      file.fieldname + "-" + uniqueSuffix + extname(file.originalname)
     );
   },
 });
@@ -19,8 +19,9 @@ const upload = multer({
   fileFilter(req, file, callback) {
     if (!allowedMIMETypes.includes(file.mimetype)) {
       callback(null, false);
+    } else {
+      callback(null, true);
     }
-    callback(null, true);
   },
 });
 
