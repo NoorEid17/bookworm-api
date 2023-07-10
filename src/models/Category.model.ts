@@ -1,9 +1,12 @@
-import { Model, DataType, DataTypes } from "sequelize";
+import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../config/postgres";
+import User from "./User.model";
 
 class Category extends Model {
   declare categoryId: number;
   declare name: string;
+  declare slug: string;
+  declare creator: number | User;
 }
 
 Category.init(
@@ -11,17 +14,37 @@ Category.init(
     categoryId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
+      primaryKey: true,
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
+    slug: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    creator: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: User,
+        key: "userId",
+      },
+    },
   },
   {
+    hooks: {
+      beforeValidate(category, options) {
+        category.slug = category.name.trim().toLowerCase().split(" ").join("_");
+      },
+    },
     sequelize,
     modelName: "Category",
   }
 );
+
+Category.belongsTo(User, { foreignKey: "creator" });
 
 export default Category;
