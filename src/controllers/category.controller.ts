@@ -1,5 +1,5 @@
 import Category from "../models/Category.model";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 export const createCategory = async (
   req: Request,
@@ -12,6 +12,27 @@ export const createCategory = async (
       creator: req.user.userId,
     });
     res.status(201).json({ msg: "Category created successfully!", category });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const deleteCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user.userId;
+    const category = await Category.findByPk(req.params["categoryId"]);
+
+    if (category?.creator !== userId) {
+      return res.status(403).json({ msg: "Access Forbidden" });
+    }
+
+    await category.destroy();
+
+    res.json({ msg: "Category deleted successfully!" });
   } catch (err) {
     next(err);
   }

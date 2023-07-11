@@ -14,4 +14,12 @@ router.post(
   CategoryController.createCategory
 );
 
+router.delete(
+  "/delete/:categoryId",
+  checkAuth,
+  CategoryValidation.validateDeleteCategory,
+  checkValidationResult,
+  CategoryController.deleteCategory
+);
+
 export default router;
