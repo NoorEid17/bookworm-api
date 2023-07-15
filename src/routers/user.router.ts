@@ -21,6 +21,8 @@ router.post(
   UserController.login
 );
 
+router.post("/logout", UserController.logout);
+
 router.patch(
   "/update",
   checkAuth,

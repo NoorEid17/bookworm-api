@@ -102,6 +102,19 @@ export const login = async (
   }
 };
 
+export const logout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    res.clearCookie("refreshToken");
+    res.json({ msg: "User logged out" });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const update = async (
   req: Request,
   res: Response,
