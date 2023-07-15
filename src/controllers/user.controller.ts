@@ -122,6 +122,23 @@ export const update = async (
 ) => {
   try {
     const user = await User.findByPk(req.user.userId);
+
+    if (req.body.newPassword) {
+      const isOldPasswordMatched = compare(
+        req.body.oldPassword,
+        user?.password!
+      );
+      if (!isOldPasswordMatched) {
+        return res.status(400).json({ error: { msg: "Incorrect Password" } });
+      }
+      req.body.password = await hash(
+        req.body.newPassword,
+        process.env.BCRYPT_SALT!
+      );
+      delete req.body.oldPassword;
+      delete req.body.newPassword;
+    }
+
     user?.set({ ...req.body });
 
     if (req.file) {

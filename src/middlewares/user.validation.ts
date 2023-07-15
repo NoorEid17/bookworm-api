@@ -29,7 +29,8 @@ export const validateUserUpdate = [
     .isLength({ min: 5, max: 30 })
     .custom(checkIfUsernameUsed),
   body("firstName").optional().isLength({ min: 3, max: 15 }),
-  body("password").optional().isLength({ min: 5, max: 30 }),
+  body("oldPassword").optional().isLength({ min: 5, max: 30 }),
+  body("newPassword").optional().isLength({ min: 5, max: 30 }),
   body("lastName").optional().isLength({ min: 3, max: 15 }),
   body("bio").optional().isLength({ min: 0, max: 200 }),
 ];
