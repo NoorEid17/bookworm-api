@@ -40,6 +40,15 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    fullName: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return `${this.firstName} ${this.lastName || ""}`;
+      },
+      set(value) {
+        throw new Error("Do not try to set the `fullName` value!");
+      },
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: Date.now(),
