@@ -96,7 +96,7 @@ export const login = async (
       httpOnly: true,
     });
 
-    res.json({ msg: "User logged in successfully!", token: accessToken });
+    res.json({ msg: "User logged in successfully!", token: accessToken, user });
   } catch (err) {
     next(err);
   }

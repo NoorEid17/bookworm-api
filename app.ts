@@ -9,7 +9,7 @@ configureDB();
 
 const app: Application = express();
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
