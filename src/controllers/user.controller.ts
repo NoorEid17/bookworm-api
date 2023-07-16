@@ -124,7 +124,7 @@ export const update = async (
     const user = await User.findByPk(req.user.userId);
 
     if (req.body.newPassword) {
-      const isOldPasswordMatched = compare(
+      const isOldPasswordMatched = await compare(
         req.body.oldPassword,
         user?.password!
       );
