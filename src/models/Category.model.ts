@@ -1,5 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../config/postgres";
+import Book from "./Book.model";
 import User from "./User.model";
 
 class Category extends Model {
@@ -46,5 +47,6 @@ Category.init(
 );
 
 Category.belongsTo(User, { foreignKey: "creator" });
+Category.belongsToMany(Book, { through: "BooksCategories" });
 
 export default Category;

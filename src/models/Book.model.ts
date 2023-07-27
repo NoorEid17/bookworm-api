@@ -1,6 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../config/postgres";
 import Category from "./Category.model";
+import User from "./User.model";
 
 class Book extends Model {
   declare bookId: number;
@@ -10,7 +11,6 @@ class Book extends Model {
   declare cover: string;
   declare reviewsCount: number;
   declare averageRating: number;
-  declare categoryId: number;
 }
 
 Book.init(
@@ -27,6 +27,7 @@ Book.init(
     slug: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     reviewsCount: {
       type: DataTypes.INTEGER,
@@ -38,15 +39,26 @@ Book.init(
     },
     cover: DataTypes.STRING,
     description: DataTypes.STRING,
-    categoryId: {
+    creator: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
-        model: Category,
-        key: "categoryId",
+        model: User,
+        key: "userId",
       },
     },
   },
-  { sequelize, modelName: "Book" }
+  {
+    hooks: {
+      beforeValidate(book, options) {
+        book.slug = book.title.trim().toLowerCase().split(" ").join("_");
+      },
+    },
+    sequelize,
+    modelName: "Book",
+  }
 );
+
+Book.belongsTo(User, { foreignKey: "creator" });
 
 export default Book;
