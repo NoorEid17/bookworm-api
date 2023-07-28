@@ -17,6 +17,19 @@ export const createCategory = async (
   }
 };
 
+export const getAllCategories = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const categories = await Category.findAll();
+    res.json({ categories });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const deleteCategory = async (
   req: Request,
   res: Response,
