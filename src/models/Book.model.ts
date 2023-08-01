@@ -38,7 +38,7 @@ Book.init(
       defaultValue: 0,
     },
     cover: DataTypes.STRING,
-    description: DataTypes.STRING,
+    description: DataTypes.TEXT,
     creator: {
       type: DataTypes.INTEGER,
       allowNull: false,

@@ -24,7 +24,7 @@ export const validateCreate = [
       if (await isTitleUsed(value))
         return Promise.reject("title is already used!");
     }),
-  body("description").notEmpty().isString().isLength({ min: 2, max: 100 }),
+  body("description").notEmpty().isString().isLength({ min: 2, max: 1000 }),
   body("categories")
     .notEmpty()
     .isArray()

@@ -33,6 +33,7 @@ export const refreshToken = async (
     const payload: any = jwt.verify(token, process.env.JWT_SECRET!);
     const userId = payload.userId;
     const user = await User.findByPk(userId);
+    console.log(user);
     const accessToken = generateAccessToken(user!);
 
     res.json({ token: accessToken });

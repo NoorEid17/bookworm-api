@@ -13,7 +13,7 @@ export const sequelize = new Sequelize({
 const configureDB = async () => {
   try {
     await sequelize.authenticate();
-    await sequelize.sync();
+    await sequelize.sync({ alter: process.env.NODE_ENV === "dev" });
     console.log("DB Connected successfuly! ✔");
   } catch (error) {
     console.log(error);
