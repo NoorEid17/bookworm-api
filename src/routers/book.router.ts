@@ -18,4 +18,6 @@ router.post(
 
 router.get("/", BookController.getBooks);
 
+router.get("/:slug", BookController.getBook);
+
 export default router;

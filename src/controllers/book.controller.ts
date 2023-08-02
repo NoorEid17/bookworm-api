@@ -51,3 +51,19 @@ export const getBooks = async (
     next(err);
   }
 };
+
+export const getBook = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const book = await Book.findOne({ where: { slug: req.params.slug } });
+    if (!book) {
+      return res.sendStatus(404);
+    }
+    res.json({ book });
+  } catch (err) {
+    next(err);
+  }
+};
