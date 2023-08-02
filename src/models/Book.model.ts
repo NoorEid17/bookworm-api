@@ -1,4 +1,4 @@
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes, HasManyAddAssociationsMixin } from "sequelize";
 import { sequelize } from "../config/postgres";
 import Category from "./Category.model";
 import User from "./User.model";
@@ -11,6 +11,8 @@ class Book extends Model {
   declare cover: string;
   declare reviewsCount: number;
   declare averageRating: number;
+
+  declare addCategories: HasManyAddAssociationsMixin<Category, number>;
 }
 
 Book.init(

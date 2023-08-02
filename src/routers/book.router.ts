@@ -16,4 +16,6 @@ router.post(
   BookController.createBook
 );
 
+router.get("/", BookController.getBooks);
+
 export default router;

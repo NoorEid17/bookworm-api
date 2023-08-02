@@ -48,5 +48,6 @@ Category.init(
 
 Category.belongsTo(User, { foreignKey: "creator" });
 Category.belongsToMany(Book, { through: "BooksCategories" });
+Book.belongsToMany(Category, { through: "BooksCategories" });
 
 export default Category;
