@@ -39,6 +39,10 @@ Book.init(
       type: DataTypes.FLOAT,
       defaultValue: 0,
     },
+    totalRatingsValue: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
     cover: DataTypes.STRING,
     description: DataTypes.TEXT,
     creator: {

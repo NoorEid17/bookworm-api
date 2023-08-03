@@ -8,6 +8,8 @@ class Review extends Model {
   declare rating: number;
   declare userId: number;
   declare bookId: number;
+  declare reviewContent: string;
+  declare totalRatingsValue: number;
 }
 
 Review.init(
@@ -20,6 +22,11 @@ Review.init(
     rating: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    reviewContent: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      defaultValue: "",
     },
     userId: {
       type: DataTypes.INTEGER,
@@ -38,5 +45,11 @@ Review.init(
   },
   { sequelize, modelName: "Review" }
 );
+
+Review.belongsTo(User, { foreignKey: "userId" });
+User.hasMany(Review, { foreignKey: "userId" });
+
+Review.belongsTo(Book, { foreignKey: "bookId" });
+Book.hasMany(Review, { foreignKey: "bookId" });
 
 export default Review;
