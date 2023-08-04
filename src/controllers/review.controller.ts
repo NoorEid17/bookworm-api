@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Review from "../models/Review.model";
+import User from "../models/User.model";
 
 const didUserAlreadyReviewed = async (
   userId: number,
@@ -27,6 +28,30 @@ export const addRating = async (
 
     const review = await Review.create({ ...req.body, userId });
     res.status(201).json({ review });
+  } catch (err) {
+    next(err);
+  }
+};
+
+type query = { page: number };
+
+export const getReviews = async (
+  req: Request<{}, {}, {}, query>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const page = Number(req.query.page || 1);
+    const { rows: reviews, count: totalReviews } = await Review.findAndCountAll(
+      {
+        offset: (page - 1) * 5,
+        limit: 5,
+        include: User,
+      }
+    );
+    const totalPages = Math.ceil(totalReviews / 5);
+    const nextPage = page + 1 > totalPages ? undefined : page + 1;
+    res.json({ reviews, nextPage });
   } catch (err) {
     next(err);
   }

@@ -2,7 +2,10 @@ import { Router } from "express";
 import * as ReviewController from "../controllers/review.controller";
 import checkAuth from "../middlewares/checkAuth";
 import checkValidationResult from "../middlewares/checkValidtion";
-import { validateAddRating } from "../middlewares/review.validation";
+import {
+  validateAddRating,
+  validateGetReviews,
+} from "../middlewares/review.validation";
 
 const router = Router();
 
@@ -13,5 +16,7 @@ router.post(
   checkValidationResult,
   ReviewController.addRating
 );
+
+router.get("/:bookId", validateGetReviews, ReviewController.getReviews);
 
 export default router;
