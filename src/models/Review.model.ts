@@ -43,7 +43,20 @@ Review.init(
       },
     },
   },
-  { sequelize, modelName: "Review" }
+  {
+    hooks: {
+      beforeCreate: async (review, options) => {
+        const book = await Book.findByPk(review.bookId);
+        await book?.incrementReviewsCount();
+      },
+      afterDestroy: async (review, options) => {
+        const book = await Book.findByPk(review.bookId);
+        await book?.decrementReviewsCount();
+      },
+    },
+    sequelize,
+    modelName: "Review",
+  }
 );
 
 Review.belongsTo(User, { foreignKey: "userId" });

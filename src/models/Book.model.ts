@@ -13,6 +13,16 @@ class Book extends Model {
   declare averageRating: number;
 
   declare addCategories: HasManyAddAssociationsMixin<Category, number>;
+
+  async incrementReviewsCount() {
+    this.reviewsCount++;
+    await this.save();
+  }
+
+  async decrementReviewsCount() {
+    this.reviewsCount--;
+    await this.save();
+  }
 }
 
 Book.init(
