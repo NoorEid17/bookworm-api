@@ -77,6 +77,7 @@ export const getSingleReview = async (
         bookId: req.params.bookId,
         userId: req.params.userId,
       },
+      include: User,
     });
     if (!review) {
       return res.sendStatus(404);

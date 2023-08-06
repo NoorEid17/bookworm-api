@@ -19,8 +19,10 @@ router.post(
 
 router.get("/:bookId", validateGetReviews, ReviewController.getReviews);
 
-router.get("/single/:bookId/:userId"),
+router.get(
+  "/single/:bookId/:userId",
   validateGetReviews,
-  ReviewController.getSingleReview;
+  ReviewController.getSingleReview
+);
 
 export default router;
