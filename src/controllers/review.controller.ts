@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { userInfo } from "os";
 import Review from "../models/Review.model";
 import User from "../models/User.model";
 
@@ -36,7 +37,7 @@ export const addRating = async (
 type query = { page: number };
 
 export const getReviews = async (
-  req: Request<{}, {}, {}, query>,
+  req: Request<{ bookId: number }, {}, {}, query>,
   res: Response,
   next: NextFunction
 ) => {
@@ -47,11 +48,40 @@ export const getReviews = async (
         offset: (page - 1) * 5,
         limit: 5,
         include: User,
+        where: {
+          bookId: req.params.bookId,
+        },
       }
     );
     const totalPages = Math.ceil(totalReviews / 5);
     const nextPage = page + 1 > totalPages ? undefined : page + 1;
     res.json({ reviews, nextPage });
+  } catch (err) {
+    next(err);
+  }
+};
+
+type Params = {
+  bookId: number;
+  userId: number;
+};
+
+export const getSingleReview = async (
+  req: Request<Params, {}, {}, {}>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const review = await Review.findOne({
+      where: {
+        bookId: req.params.bookId,
+        userId: req.params.userId,
+      },
+    });
+    if (!review) {
+      return res.sendStatus(404);
+    }
+    res.json({ review });
   } catch (err) {
     next(err);
   }

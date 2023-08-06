@@ -19,4 +19,8 @@ router.post(
 
 router.get("/:bookId", validateGetReviews, ReviewController.getReviews);
 
+router.get("/single/:bookId/:userId"),
+  validateGetReviews,
+  ReviewController.getSingleReview;
+
 export default router;
