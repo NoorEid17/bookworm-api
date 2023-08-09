@@ -10,7 +10,7 @@ const doesBookExist = async (bookId: number) => {
 
 export const validateAddRating = [
   body("bookId").notEmpty().isInt().custom(doesBookExist),
-  body("reviewContent").isString().optional(),
+  body("reviewContent").isString().isLength({ max: 1000 }).optional(),
   body("rating").isInt({ min: 0, max: 5 }).notEmpty(),
 ];
 
