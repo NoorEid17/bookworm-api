@@ -48,10 +48,14 @@ Review.init(
       beforeCreate: async (review, options) => {
         const book = await Book.findByPk(review.bookId);
         await book?.incrementReviewsCount();
+        await book?.addRatingValue(review.rating);
+        await book?.reCalculateAvgRating();
       },
-      afterDestroy: async (review, options) => {
+      beforeDestroy: async (review, options) => {
         const book = await Book.findByPk(review.bookId);
         await book?.decrementReviewsCount();
+        await book?.decreaseRatingValue(review.rating);
+        await book?.reCalculateAvgRating();
       },
     },
     sequelize,

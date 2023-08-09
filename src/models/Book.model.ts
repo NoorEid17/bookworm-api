@@ -11,6 +11,7 @@ class Book extends Model {
   declare cover: string;
   declare reviewsCount: number;
   declare averageRating: number;
+  declare totalRatingsValue: number;
 
   declare addCategories: HasManyAddAssociationsMixin<Category, number>;
 
@@ -21,6 +22,21 @@ class Book extends Model {
 
   async decrementReviewsCount() {
     this.reviewsCount--;
+    await this.save();
+  }
+
+  async addRatingValue(ratingValue: number) {
+    this.totalRatingsValue += ratingValue;
+    await this.save();
+  }
+
+  async decreaseRatingValue(ratingValue: number) {
+    this.totalRatingsValue -= ratingValue;
+    await this.save();
+  }
+
+  async reCalculateAvgRating() {
+    this.averageRating = this.totalRatingsValue / this.reviewsCount;
     await this.save();
   }
 }
