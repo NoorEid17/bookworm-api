@@ -20,6 +20,10 @@ router.get("/", BookController.getBooks);
 
 router.get("/search", BookValidator.validateSearch, BookController.searchBooks);
 
-router.get("/:slug", BookController.getBook);
+router.get(
+  "/category",
+  BookValidator.validateGetBooksByCategory,
+  BookController.getCategoryBooks
+);
 
 export default router;

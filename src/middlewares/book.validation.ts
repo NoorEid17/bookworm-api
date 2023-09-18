@@ -40,3 +40,7 @@ export const validateCreate = [
 export const validateSearch = [
   query("searchQuery").isString().notEmpty().isLength({ min: 3, max: 100 }),
 ];
+
+export const validateGetBooksByCategory = [
+  query("searchQuery").isString().notEmpty().isLength({ min: 3, max: 100 }),
+];

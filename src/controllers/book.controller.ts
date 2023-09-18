@@ -93,3 +93,26 @@ export const searchBooks = async (
     next(err);
   }
 };
+
+export const getCategoryBooks = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const page = Number(req.query.page || 1);
+    const SIZE = 10;
+    const category = await Category.findOne({
+      where: {
+        slug: req.query.slug,
+      },
+    });
+    const books = await category?.getBooks();
+    const totalBooks = await category?.countBooks();
+    const totalPages = Math.ceil((totalBooks || 0) / SIZE);
+    const nextPage = page + 1 > totalPages ? undefined : page + 1;
+    res.json({ books, nextPage });
+  } catch (err) {
+    next(err);
+  }
+};

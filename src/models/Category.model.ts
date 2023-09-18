@@ -1,4 +1,9 @@
-import { Model, DataTypes } from "sequelize";
+import {
+  Model,
+  DataTypes,
+  BelongsToManyGetAssociationsMixin,
+  BelongsToManyCountAssociationsMixin,
+} from "sequelize";
 import { sequelize } from "../config/postgres";
 import Book from "./Book.model";
 import User from "./User.model";
@@ -8,6 +13,9 @@ class Category extends Model {
   declare name: string;
   declare slug: string;
   declare creator: number | User;
+
+  declare getBooks: BelongsToManyGetAssociationsMixin<Book>;
+  declare countBooks: BelongsToManyCountAssociationsMixin;
 }
 
 Category.init(
