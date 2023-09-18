@@ -1,6 +1,7 @@
 import { NextFunction, Response, Request } from "express";
 import Book from "../models/Book.model";
 import Category from "../models/Category.model";
+import { Op } from "sequelize";
 
 export const createBook = async (
   req: Request,
@@ -63,6 +64,31 @@ export const getBook = async (
       return res.sendStatus(404);
     }
     res.json({ book });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const searchBooks = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const page = Number(req.query.page || 1);
+    const size = Number(req.query.size || 7);
+    const searchQuery = req.query.searchQuery;
+    const { rows: books, count: totalBooks } = await Book.findAndCountAll({
+      offset: (page - 1) * size,
+      limit: size,
+      include: Category,
+      where: {
+        title: { [Op.iLike]: `%${searchQuery}%` },
+      },
+    });
+    const totalPages = Math.ceil(totalBooks / size);
+    const nextPage = page + 1 > totalPages ? undefined : page + 1;
+    res.json({ books, nextPage });
   } catch (err) {
     next(err);
   }

@@ -18,6 +18,8 @@ router.post(
 
 router.get("/", BookController.getBooks);
 
+router.get("/search", BookValidator.validateSearch, BookController.searchBooks);
+
 router.get("/:slug", BookController.getBook);
 
 export default router;

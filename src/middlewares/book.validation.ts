@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, query } from "express-validator";
 import Book from "../models/Book.model";
 import Category from "../models/Category.model";
 
@@ -35,4 +35,8 @@ export const validateCreate = [
         }
       }
     }),
+];
+
+export const validateSearch = [
+  query("searchQuery").isString().notEmpty().isLength({ min: 3, max: 100 }),
 ];
